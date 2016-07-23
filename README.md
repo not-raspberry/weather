@@ -2,7 +2,13 @@
 
 A weather web app.
 
-# Requirements
+## Configuration
+
+Supply an EDN file, similar to the ./env/dev/config/config.edn file.
+
+Where to put the file? - see https://github.com/yogthos/config/.
+
+## Requirements
 
 JVM 1.8, Clojure 1.8.
 

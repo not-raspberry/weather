@@ -1,0 +1,4 @@
+{:database-name "weather"
+ :username "weather"
+ :password "dev"
+ :port 3000}
