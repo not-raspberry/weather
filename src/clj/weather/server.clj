@@ -22,15 +22,19 @@
     (Integer/parseInt n)
     n))
 
-(defn connect-to-db []
+(defn db-options
+  "Extract database connection options from the passed env."
+  [environment]
   (let [mandatory-db-keys [:database-name :username :password]
         db-options (select-keys env mandatory-db-keys)
         missing-params (remove db-options mandatory-db-keys)]
 
     (if (empty? missing-params)
-      (db/connect! db-options)
+      db-options
       (throw (ex-info "Missing keys in the config" {:missing-keys missing-params})))))
 
+(defn connect-to-db []
+  (db/connect! (db-options env)))
 
 (defn start-server []
   (run-jetty app {:port (coerce-to-int (:port env 3000))
@@ -42,4 +46,7 @@
     (catch clojure.lang.ExceptionInfo e
       (do (println (.getMessage e) (ex-data e))
           (System/exit 1))))
-  (start-server))
+
+  (if-let [command (first args)]
+    (db/migrate command)
+    (start-server)))

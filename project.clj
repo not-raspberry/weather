@@ -22,7 +22,8 @@
                   :exclusions [org.clojure/tools.reader]]
                  [org.clojure/java.jdbc "0.6.2-alpha2"]
                  [org.postgresql/postgresql "9.3-1102-jdbc41"]
-                 [hikari-cp "1.7.2"]]
+                 [hikari-cp "1.7.2"]
+                 [migratus "0.8.27"]]
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]

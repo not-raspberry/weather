@@ -1,7 +1,8 @@
 (ns weather.db
-  "Database connection pool."
+  "Database connection pool and migrations."
   (:require [hikari-cp.core :as hikari]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.java.jdbc :as jdbc]
+            [migratus.core :as migratus]))
 
 (def connection-defaults
   {:auto-commit        true
@@ -46,3 +47,24 @@
     (jdbc/with-db-connection [conn {:datasource datasource}]
       (binding [*db* conn]
         (handler request)))))
+
+(defn migrate
+  "Migrate the table up (if the command is \"migrate\") or revert the last migration
+  (if it is \"rollback\").
+
+  Requires an active db connection.
+  "
+  [command]
+  (assert (some? datasource)
+          "Migrations require the DB connection to be set up.")
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+    (let [config
+          {:store :database
+           :migration-dir "migrations/"
+           :migration-table-name "migrations"
+           :db conn}]
+      (case command
+        "migrate" (migratus/migrate config)
+        "rollback" (migratus/rollback config)
+        (throw (ex-info "Unrecognised command. Use `migrate` or `rollback`."
+                        {:command command}))))))
