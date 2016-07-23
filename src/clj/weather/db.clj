@@ -31,6 +31,9 @@
   (def datasource
     (hikari/make-datasource (merge connection-defaults connection-options))))
 
+(defn disconnect! []
+  (hikari/close-datasource datasource))
+
 (def ^:dynamic *db* "Current database connection from the pool." nil)
 
 (defn wrap-db-connection
