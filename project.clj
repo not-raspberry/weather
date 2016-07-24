@@ -23,7 +23,11 @@
                  [org.clojure/java.jdbc "0.6.2-alpha2"]
                  [org.postgresql/postgresql "9.3-1102-jdbc41"]
                  [hikari-cp "1.7.2"]
-                 [migratus "0.8.27"]]
+                 [migratus "0.8.27"]
+                 [clj-http "2.2.0"]
+				 [org.clojure/data.xml "0.0.8"]
+                 [org.clojure/data.zip "0.1.1"]
+                 [clj-time "0.12.0"]]
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]
