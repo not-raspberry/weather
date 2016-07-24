@@ -49,11 +49,10 @@
         (handler request)))))
 
 (defn migrate
-  "Migrate the table up (if the command is \"migrate\") or revert the last migration
-  (if it is \"rollback\").
+  "Migrate the table up (if the command is :upgrade) or revert the last migration
+  (if it is :rollback).
 
-  Requires an active db connection.
-  "
+  Requires an active db connection."
   [command]
   (assert (some? datasource)
           "Migrations require the DB connection to be set up.")
@@ -64,7 +63,5 @@
            :migration-table-name "migrations"
            :db conn}]
       (case command
-        "migrate" (migratus/migrate config)
-        "rollback" (migratus/rollback config)
-        (throw (ex-info "Unrecognised command. Use `migrate` or `rollback`."
-                        {:command command}))))))
+        :upgrade (migratus/migrate config)
+        :rollback (migratus/rollback config)))))

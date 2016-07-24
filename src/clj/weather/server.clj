@@ -4,6 +4,7 @@
             [clojure.tools.logging :as logging]
             [weather.handler :refer [app]]
             [weather.db :as db]
+            [weather.fetch :as fetch]
             [config.core :refer [env]]
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
@@ -48,5 +49,12 @@
           (System/exit 1))))
 
   (if-let [command (first args)]
-    (db/migrate command)
+    (case command
+      "migrate" (db/migrate :upgrade)
+      "rollback" (db/migrate :rollback)
+      "initial-fetch" (fetch/initial-fetch-and-save)
+      "fetch" (fetch/fetch-and-save)
+      (do (println "Unrecognised command."
+                   "Use `migrate`, `rollback` `fetch`, `initial-fetch`.")
+          (System/exit 1)))
     (start-server)))
