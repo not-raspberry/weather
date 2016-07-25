@@ -31,7 +31,7 @@
   [req]
   {:body (jdbc/query
            *db*
-           ["SELECT date, description, temp_min, temp_max FROM conditions
+           ["SELECT date, description, temp_min AS low, temp_max as hi FROM conditions
             ORDER BY date DESC LIMIT 32"])})
 
 (defroutes routes
