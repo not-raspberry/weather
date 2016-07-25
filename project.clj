@@ -27,7 +27,10 @@
                  [clj-http "2.2.0"]
 				 [org.clojure/data.xml "0.0.8"]
                  [org.clojure/data.zip "0.1.1"]
-                 [clj-time "0.12.0"]]
+                 [clj-time "0.12.0"]
+                 [com.cognitect/transit-clj "0.8.285"]
+                 [com.cognitect/transit-cljs "0.8.239"]
+                 [ring-transit "0.1.6"]]
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]

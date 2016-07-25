@@ -2,9 +2,11 @@
   (:require [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
+            [clojure.java.jdbc :as jdbc]
             [weather.middleware :refer [wrap-middleware]]
-            [weather.db :refer [wrap-db-connection]]
-            [config.core :refer [env]]))
+            [weather.db :refer [*db* wrap-db-connection]]
+            [config.core :refer [env]]
+            [ring.middleware.transit :refer [wrap-transit-response]]))
 
 (def mount-target
   [:div#app
@@ -24,11 +26,22 @@
      mount-target
      (include-js "/js/app.js")]))
 
+(defn conditions
+  "Responds with recent conditions as EDN."
+  [req]
+  {:body (jdbc/query
+           *db*
+           ["SELECT date, description, temp_min, temp_max FROM conditions
+            ORDER BY date DESC LIMIT 32"])})
+
 (defroutes routes
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
+  (GET "/conditions" [] conditions)
 
   (resources "/")
   (not-found "Not Found"))
 
-(def app (wrap-middleware (wrap-db-connection #'routes)))
+(def app (wrap-middleware (wrap-transit-response
+                            (wrap-db-connection #'routes)
+                            {:encoding :json-verbose})))
