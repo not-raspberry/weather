@@ -20,7 +20,7 @@
    :register-mbeans    false})
 
 
-(def datasource)
+(defonce datasource nil)
 
 (defn connect!
   "Establish the connection to the database.
