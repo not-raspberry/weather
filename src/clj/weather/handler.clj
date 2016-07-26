@@ -12,19 +12,20 @@
 
 (def mount-target
   [:div#app
-      [:h3 "It's loading..."]])
+   [:h3 "It's loading..."]])
 
 (defn head []
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+   (for [asset ["/css/site" "/css/bootstrap" "/css/site"]]
+     (include-css (str asset (if (env :dev) ".css" ".min.css"))))])
 
 (def loading-page
   (html5
     (head)
-    [:body {:class "body-container"}
+    [:body.container
      mount-target
      (include-js "/js/app.js")]))
 

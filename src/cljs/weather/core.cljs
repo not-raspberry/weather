@@ -19,25 +19,28 @@
 
 (defn day-conditions [day-map average-low average-hi]
   (let [{:keys [low hi description weekday]} day-map]
-        [:li {:key weekday}
-         weekday
-         [:br]
-         "High " hi " " (difference hi average-hi)
-         [:br]
-         "Low " low " " (difference low average-low)
-         [:br]
-         description]))
+    [:div.col-md-3 {:key weekday}
+     [:div.panel.panel-info
+      [:div.panel-heading weekday]
+      [:div.panel-body
+       "High " hi " " (difference hi average-hi)
+       [:br]
+       "Low " low " " (difference low average-low)
+       [:br]
+       description]]]))
 
 (defn forecast-page []
   [:div [:h2 "Weather in London"]
    (when-let [error (:error @state)]
-     (str "Error fetching weather conditions: " error))
+     [:div.alert.alert-danger {:role "alert"}
+      (str "Error fetching weather conditions: " error)])
    (when-let [conditions (:conditions @state)]
      (let [{forecast :forecast
             {:keys [hi low]} :historical-avg} conditions]
        [:div
         [:h3 "Forecast"]
-        [:ul
+        [:hr]
+        [:div.row
          (map #(day-conditions % low hi) forecast)]]))])
 
 (defn mount-root []
@@ -54,7 +57,7 @@
 
 (defn fetch-conditions []
   (GET "/conditions" {:handler conditions-fetched
-                       :error-handler conditions-fetch-error}))
+                      :error-handler conditions-fetch-error}))
 
 (defn init! []
   (mount-root)
