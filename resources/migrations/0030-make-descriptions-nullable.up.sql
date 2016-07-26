@@ -1,0 +1,1 @@
+ALTER TABLE conditions ALTER COLUMN description DROP NOT NULL;

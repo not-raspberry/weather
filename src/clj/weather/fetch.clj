@@ -67,8 +67,7 @@
   []
   {:hi (rand-range 15 26)
    :low (rand-range 5 16)
-   :description (rand-nth ["Mostly sunny" "Mostly cloudy" "Showers" "Sunny"
-                           "Cloudy" "Clouds Early / Clearing Late"])})
+   :description nil})
 
 (defn fake-historical-conditions
   "Generates fake historical conditions for 28 days before `day-until`."
@@ -105,7 +104,8 @@
   "Fetches the forecast, formats it, and saves."
   (let [conditions (fetch-forecast)]
     (log/info "Forecast" conditions)
-    (save-conditions conditions)))
+    (save-conditions conditions)
+    (log/info "Success.")))
 
 (defn initial-fetch-and-save
   "Fetches the forecast, formats it, prepends with fake historical data, and saves."
@@ -115,4 +115,5 @@
                                (:date (first forecast-days)))]
     (log/info "Forecast" forecast-days)
     (log/info "Fake historical data" fake-historical-days)
-    (save-conditions (concat fake-historical-days forecast-days))))
+    (save-conditions (concat fake-historical-days forecast-days))
+    (log/info "Success.")))
