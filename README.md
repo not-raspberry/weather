@@ -2,6 +2,9 @@
 
 A weather web app.
 
+![Mobile screenshot](/screenshots/mobile.png "Mobile") ![Desktop screenshot](/screenshots/desktop.png "Desktop")
+
+
 ## Configuration
 
 Supply an EDN file, similar to the ./env/dev/config/config.edn file.
