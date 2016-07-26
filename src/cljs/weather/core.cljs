@@ -19,15 +19,15 @@
 
 (defn day-conditions [day-map average-low average-hi]
   (let [{:keys [low hi description weekday]} day-map]
-    [:div.col-md-3 {:key weekday}
+    [:div.col-sm-3 {:key weekday}
      [:div.panel.panel-info
       [:div.panel-heading weekday]
       [:div.panel-body
-       "High " hi " " (difference hi average-hi)
+       description
        [:br]
-       "Low " low " " (difference low average-low)
+       "High " hi "° " (difference hi average-hi)
        [:br]
-       description]]]))
+       "Low " low "° " (difference low average-low)]]]))
 
 (defn forecast-page []
   [:div [:h2 "Weather in London"]
