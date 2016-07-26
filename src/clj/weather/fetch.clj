@@ -82,7 +82,11 @@
   "INSERT INTO conditions (date, description, temp_min, temp_max)
   VALUES (?, ?, ?, ?)
   ON CONFLICT (date) DO UPDATE SET
-    description = EXCLUDED.description,
+    -- Update description only if the new one in not empty:
+    description = CASE WHEN EXCLUDED.description = ''
+                            THEN conditions.description
+                       ELSE EXCLUDED.description
+                  END,
     temp_min = EXCLUDED.temp_min,
     temp_max = EXCLUDED.temp_max
   ")
