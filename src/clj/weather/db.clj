@@ -6,7 +6,7 @@
             [migratus.core :as migratus]))
 
 (def connection-defaults
-  {:auto-commit        true
+  {:auto-commit        false
    :read-only          false
    :connection-timeout 30000
    :validation-timeout 5000
@@ -20,8 +20,11 @@
    :port-number        5432
    :register-mbeans    false})
 
+(defonce datasource (atom nil))
 
-(defonce datasource nil)
+(defonce ^:dynamic ^{:doc "Current database connection from the pool."}
+  *db* nil)
+
 
 (defn connect!
   "Establish the connection to the database.
@@ -30,25 +33,23 @@
   and may contain any keys accepted by hikari-cp.
   "
   [connection-options]
-  (def datasource
+  (reset! datasource
     (hikari/make-datasource (merge connection-defaults connection-options))))
 
 (defn disconnect! []
-  (hikari/close-datasource datasource))
-
-(defonce ^:dynamic ^{:doc "Current database connection from the pool."}
-  *db* nil)
+  (swap! datasource (fn [s] (hikari/close-datasource s) nil)))
 
 (defn wrap-db-connection
   "Wraps a request handler to grab a connection from the pool before calling the
   handler and put it back after."
   [handler]
   (fn handler-with-db-connection [request]
-    (assert (some? datasource)
-            "Requests may only happen after establishing a DB connection.")
-    (jdbc/with-db-connection [conn {:datasource datasource}]
-      (binding [*db* conn]
-        (handler request)))))
+    (let [source @datasource]
+      (assert (some? source)
+              "Requests may only happen after establishing a DB connection.")
+      (jdbc/with-db-connection [conn {:datasource source}]
+        (binding [*db* conn]
+          (handler request))))))
 
 (defn migrate
   "Migrate the table up (if the command is :upgrade) or revert the last migration
@@ -58,7 +59,7 @@
   [command]
   (assert (some? datasource)
           "Migrations require the DB connection to be set up.")
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [config
           {:store :database
            :migration-dir "migrations/"

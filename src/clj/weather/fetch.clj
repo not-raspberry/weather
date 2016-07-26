@@ -95,7 +95,7 @@
   "Save condition data to the database."
   [conditions]
   (try
-    (jdbc/with-db-connection [conn {:datasource db/datasource}]
+    (jdbc/with-db-connection [conn {:datasource @db/datasource}]
       (jdbc/execute!
         conn (concat [save-conditions-sql]
                      (map (juxt (comp to-sql-date :date) :description :low :hi)
@@ -104,8 +104,9 @@
     (catch SQLException e
       (throw (ex-info "Error saving conditions" {:error (.getNextException e)})))))
 
-(defn fetch-and-save []
+(defn fetch-and-save
   "Fetches the forecast, formats it, and saves."
+  []
   (let [conditions (fetch-forecast)]
     (log/info "Forecast" conditions)
     (save-conditions conditions)
