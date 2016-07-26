@@ -2,6 +2,7 @@
   "Database connection pool and migrations."
   (:require [hikari-cp.core :as hikari]
             [clojure.java.jdbc :as jdbc]
+            [clj-time.jdbc]  ; Extends jdbc date conversion protocols.
             [migratus.core :as migratus]))
 
 (def connection-defaults
@@ -35,7 +36,8 @@
 (defn disconnect! []
   (hikari/close-datasource datasource))
 
-(def ^:dynamic *db* "Current database connection from the pool." nil)
+(defonce ^:dynamic ^{:doc "Current database connection from the pool."}
+  *db* nil)
 
 (defn wrap-db-connection
   "Wraps a request handler to grab a connection from the pool before calling the

@@ -6,24 +6,39 @@
 (defonce state (atom {:conditions nil :error nil}))
 
 
-(defn day-conditions [day-map]
-  (let [{:keys [low hi description date]} day-map]
-        [:li {:key date}
-         (.toString date)
+(defn difference
+  "Formats signed difference between value and avg.
+
+  E.g. +1 or -4.
+  Returns nil if numbers are equal"
+  [value avg]
+  (let [diff (- value avg)]
+    (if-not (zero? diff)
+      (str (if (pos? diff) "+" "-")
+           (.abs js/Math diff)))))
+
+(defn day-conditions [day-map average-low average-hi]
+  (let [{:keys [low hi description weekday]} day-map]
+        [:li {:key weekday}
+         weekday
          [:br]
-         "Low " low
+         "High " hi " " (difference hi average-hi)
          [:br]
-         "High " hi
+         "Low " low " " (difference low average-low)
          [:br]
          description]))
 
 (defn forecast-page []
-  [:div [:h2 "Welcome to weather"]
+  [:div [:h2 "Weather in London"]
    (when-let [error (:error @state)]
      (str "Error fetching weather conditions: " error))
    (when-let [conditions (:conditions @state)]
-     [:ul
-      (map day-conditions conditions)])])
+     (let [{forecast :forecast
+            {:keys [hi low]} :historical-avg} conditions]
+       [:div
+        [:h3 "Forecast"]
+        [:ul
+         (map #(day-conditions % low hi) forecast)]]))])
 
 (defn mount-root []
   (reagent/render [forecast-page] (.getElementById js/document "app")))
