@@ -19,7 +19,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (for [asset ["/css/site" "/css/bootstrap" "/css/site"]]
+   (for [asset ["/css/bootstrap" "/css/bootstrap-theme"]]
      (include-css (str asset (if (env :dev) ".css" ".min.css"))))])
 
 (def loading-page
