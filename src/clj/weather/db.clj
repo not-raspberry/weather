@@ -2,6 +2,7 @@
   "Database connection pool and migrations."
   (:require [hikari-cp.core :as hikari]
             [clojure.java.jdbc :as jdbc]
+            [hugsql.core :as hugsql]
             [clj-time.jdbc]  ; Extends jdbc date conversion protocols.
             [migratus.core :as migratus]))
 
@@ -24,6 +25,8 @@
 
 (defonce ^:dynamic ^{:doc "Current database connection from the pool."}
   *db* nil)
+
+(hugsql/def-db-fns "sql/queries.sql")
 
 
 (defn connect!

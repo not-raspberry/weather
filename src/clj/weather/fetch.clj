@@ -1,17 +1,16 @@
 (ns weather.fetch
   "Fetching and saving weather forecasts and faking historical data."
-  (:require [clj-http.client :as http]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [clojure.data.xml :as xml]
             [clojure.zip :as zip]
             [clojure.data.zip.xml :as zip-xml]
             [clojure.java.jdbc :as jdbc]
             [clojure.tools.logging :as log]
-            [weather.db :as db]
+            [clj-http.client :as http]
             [clj-time.core :as t]
             [clj-time.coerce :refer [to-local-date to-sql-date]]
-            [clj-time.format :as f])
-  (:import [java.sql SQLException]))
+            [clj-time.format :as f]
+            [weather.db :as db]))
 
 (def weather-url
   "Weather forcecast for London for today and the next 3 days."
@@ -77,32 +76,15 @@
            :date
            (t/plus day-until (t/days days-delta)))))
 
-
-(def save-conditions-sql
-  "INSERT INTO conditions (date, description, temp_min, temp_max)
-  VALUES (?, ?, ?, ?)
-  ON CONFLICT (date) DO UPDATE SET
-    -- Update description only if the new one in not empty:
-    description = CASE WHEN EXCLUDED.description = ''
-                            THEN conditions.description
-                       ELSE EXCLUDED.description
-                  END,
-    temp_min = EXCLUDED.temp_min,
-    temp_max = EXCLUDED.temp_max
-  ")
-
 (defn save-conditions
   "Save condition data to the database."
   [conditions]
-  (try
-    (jdbc/with-db-connection [conn {:datasource @db/datasource}]
-      (jdbc/execute!
-        conn (concat [save-conditions-sql]
-                     (map (juxt (comp to-sql-date :date) :description :low :hi)
-                          conditions))
-        {:multi? true}))
-    (catch SQLException e
-      (throw (ex-info "Error saving conditions" {:error (.getNextException e)})))))
+  (jdbc/with-db-connection [conn {:datasource @db/datasource}]
+    (db/save-weather-conditions
+      conn
+      {:conditions
+       (map (juxt (comp to-sql-date :date) :description :low :hi)
+            conditions)})))
 
 (defn fetch-and-save
   "Fetches the forecast, formats it, and saves."
