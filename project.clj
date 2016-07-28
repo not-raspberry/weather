@@ -110,7 +110,7 @@
 
                    :source-paths ["env/dev/clj"]
                    :resource-paths ["env/dev/config"]
-                   :plugins [[lein-figwheel "0.5.4-5"]
+                   :plugins [[lein-figwheel "0.5.4-7"]
                              [lein-doo "0.1.7"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
