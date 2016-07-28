@@ -19,12 +19,16 @@
 (defn grab-forecast-stream []
   (:body (http/get weather-url {:as :stream})))
 
-(defn xml-stream->xml-zip [stream]
+(defn stream->xml-zip
+  "Parses the stream into clojure.data.zip.xml/xml-zip."
+  [stream]
   (-> stream
       xml/parse
       zip/xml-zip))
 
-(defn day-element->day-map [day]
+(defn day-element->day-map
+  "Extracts conditions from a <day> XML element of the forecast."
+  [day]
   {:hi (Integer/parseInt (zip-xml/xml1-> day :hi zip-xml/text))
    :low (Integer/parseInt (zip-xml/xml1-> day :low zip-xml/text))
    :description (zip-xml/xml1-> day :part (zip-xml/attr= :p "d") :t zip-xml/text)})
@@ -37,23 +41,36 @@
   (to-local-date (f/parse forecast-time-formatter
                      (first (string/split formatted-date #" ")))))
 
-(defn parsed-forecast [forecast]
+(defn parsed-forecast
+  "Extracts daily conditions and forecast date from the passed forecast xml-zip."
+  [forecast]
   (let [days-wrapper (zip-xml/xml1-> forecast :dayf)
         query-time (zip-xml/xml1-> forecast :cc :lsup zip-xml/text)
         days (zip-xml/xml-> days-wrapper :day)]
     {:forecast-day (forecast-date query-time)
      :days (map day-element->day-map days)}))
 
-(defn stamped-forecast-days [parsed-forecast]
+(defn stamped-forecast-days
+  "Takes daily conditions maps from the processed forecast map
+  and stamps them with consecutive dates, beginning with the date of
+  the forecast."
+  [parsed-forecast]
   (let [first-date (:forecast-day parsed-forecast)]
     (map-indexed
-      (fn [i day]
-        (assoc day :date (t/plus first-date (t/days i))))
+      (fn [days-since-today day-conditions]
+        (assoc day-conditions :date (t/plus first-date (t/days days-since-today))))
       (:days parsed-forecast))))
 
-(defn processed-forecast [forecast-stream]
+(defn processed-forecast
+  "Fully processes XML response stream to extract weather data, like:
+
+  '({:hi 23 :low 12 :description \"Cloudy\" :date (t/local-date 2016 7 25)}
+    {:hi 23 :low 15 :description \"Mostly Cloudy\"
+     :date (t/local-date 2016 7 26)})
+  "
+  [forecast-stream]
   (-> forecast-stream
-      xml-stream->xml-zip
+      stream->xml-zip
       parsed-forecast
       stamped-forecast-days))
 
