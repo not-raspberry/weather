@@ -1,4 +1,4 @@
-# weather
+# weather [![Build Status](https://travis-ci.org/not-raspberry/weather.svg?branch=master)](https://travis-ci.org/not-raspberry/weather)
 
 A weather web app.
 
