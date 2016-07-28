@@ -1,21 +1,22 @@
 (ns weather.core
-  (:require [clojure.string :as string]
-            [reagent.core :as reagent :refer [atom]]
+  (:require [reagent.core :as reagent :refer [atom]]
+            [goog.string :as string]
+            [goog.string.format :as string-format]
             [ajax.core :refer [GET]]))
 
 (defonce state (atom {:conditions nil :error nil}))
 
 
-(defn difference
+(defn formatted-difference
   "Formats signed difference between value and avg.
 
   E.g. +1 or -4.
-  Returns nil if numbers are equal"
+  Returns nil if numbers are equal or if one of the numbers is nil."
   [avg value]
-  (let [diff (- value avg)]
-    (if-not (zero? diff)
-      (str (if (pos? diff) "+" "-")
-           (.abs js/Math diff)))))
+  (when (and (some? avg) (some? value))
+    (let [diff (- value avg)]
+      (when-not (zero? diff)
+        (string/format "%+i" diff)))))
 
 (defn day-conditions [day-map average-low average-hi]
   (let [{:keys [low hi description weekday]} day-map]
@@ -25,9 +26,9 @@
       [:div.panel-body
        description
        [:br]
-       "High " hi "° " (difference average-hi hi)
+       "High " hi "° " (formatted-difference average-hi hi)
        [:br]
-       "Low " low "° " (difference average-low low)]]]))
+       "Low " low "° " (formatted-difference average-low low)]]]))
 
 (defn forecast-page []
   [:div [:h2 "Weather in London"]
