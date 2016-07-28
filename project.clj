@@ -28,7 +28,8 @@
                  [ring-transit "0.1.6"]
                  [cljs-ajax "0.5.8"]
                  [com.layerware/hugsql "0.4.7"]
-                 [org.clojure/test.check "0.9.0"]]
+                 [org.clojure/test.check "0.9.0"]
+                 [org.slf4j/slf4j-log4j12 "1.7.9"]]
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]

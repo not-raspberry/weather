@@ -1,19 +1,11 @@
 (ns weather.server
   (:require [clojure.edn :as edn]
-            [clojure.tools.logging.impl :as logging-impl]
-            [clojure.tools.logging :as logging]
             [weather.handler :refer [app]]
             [weather.db :as db]
             [weather.fetch :as fetch]
             [config.core :refer [env]]
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
-
-; The dependency on hikari-cp adds slf4j with no handlers and tools.logging
-; is more than happy to use it. To avoid having to use and configure slf4j,
-; force java.util.logging.
-(alter-var-root #'logging/*logger-factory*
-                (constantly (logging-impl/jul-factory)))
 
 (defn read-config [path]
   (edn/read-string (slurp path)))
