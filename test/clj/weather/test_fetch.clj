@@ -13,6 +13,25 @@
 (defn forecast-stream-empty []
   (input-stream (resource "sample/empty-forecast.xml")))
 
+(def expected-parsed-forecast
+  "Expected results of parsing sample/forecast.xml"
+  [{:hi 23
+    :low 14
+    :description ""
+    :date (t/local-date 2016 7 24)}
+   {:hi 23
+    :low 12
+    :description "Cloudy"
+    :date (t/local-date 2016 7 25)}
+   {:hi 23
+    :low 15
+    :description "Mostly Cloudy"
+    :date (t/local-date 2016 7 26)}
+   {:hi 22
+    :low 15
+    :description "Showers"
+    :date (t/local-date 2016 7 27)}])
+
 
 (defspec number-generated-by-rand-range-is-in-the-passed-range
   100000
@@ -66,22 +85,7 @@
 (deftest test-processed-forecast
   (testing "valid response XML with conditions in it"
     (is (= (processed-forecast (forecast-stream))
-           [{:hi 23
-             :low 14
-             :description ""
-             :date (t/local-date 2016 7 24)}
-            {:hi 23
-             :low 12
-             :description "Cloudy"
-             :date (t/local-date 2016 7 25)}
-            {:hi 23
-             :low 15
-             :description "Mostly Cloudy"
-             :date (t/local-date 2016 7 26)}
-            {:hi 22
-             :low 15
-             :description "Showers"
-             :date (t/local-date 2016 7 27)}])))
+           expected-parsed-forecast)))
 
   (testing "response with no forecast"
     (is (= (processed-forecast (forecast-stream-empty)) []))))

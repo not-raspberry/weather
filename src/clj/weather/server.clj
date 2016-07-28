@@ -7,9 +7,6 @@
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
 
-(defn read-config [path]
-  (edn/read-string (slurp path)))
-
 (defn coerce-to-int [n]
   (if (string? n)
     (Integer/parseInt n)

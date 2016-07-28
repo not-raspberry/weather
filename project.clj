@@ -28,7 +28,6 @@
                  [ring-transit "0.1.6"]
                  [cljs-ajax "0.5.8"]
                  [com.layerware/hugsql "0.4.7"]
-                 [org.clojure/test.check "0.9.0"]
                  [org.slf4j/slf4j-log4j12 "1.7.21"]]
 
   :plugins [[lein-environ "1.0.2"]
@@ -97,19 +96,19 @@
                                   [figwheel-sidecar "0.5.4-7"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.0"]
-                                  ]
+                                  [pjstadig/humane-test-output "0.8.0"]]
 
                    :source-paths ["env/dev/clj"]
                    :resource-paths ["env/dev/config"]
-                   :plugins [[lein-figwheel "0.5.4-5"]
-                             ]
+                   :plugins [[lein-figwheel "0.5.4-5"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
 
                    :env {:dev true}}
 
+             :test {:dependencies [[org.clojure/test.check "0.9.0"]]
+                    :resource-paths ["env/test/config"]}
              :uberjar {:hooks [minify-assets.plugin/hooks]
                        :source-paths ["env/prod/clj"]
                        :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
