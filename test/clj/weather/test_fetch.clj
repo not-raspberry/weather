@@ -1,10 +1,18 @@
 (ns weather.test-fetch
-  (:require [clojure.test :refer :all]
+  (:require [clojure.java.io :refer [input-stream resource]]
+            [clojure.test :refer :all]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
             [clj-time.core :as t]
             [weather.fetch :refer :all]))
+
+(defn forecast-stream []
+  (input-stream (resource "sample/forecast.xml")))
+
+(defn forecast-stream-empty []
+  (input-stream (resource "sample/empty-forecast.xml")))
+
 
 (defspec number-generated-by-rand-range-is-in-the-passed-range
   100000
@@ -49,3 +57,31 @@
 
     (is (t/equal? (t/plus (:date (last conditions)) (t/days 1))
                   today) "Last date should be one day before the passed date.")))
+
+(deftest test-forecast-date
+  (are [date-str date] (= (forecast-date date-str) date)
+       "7/26/16 1:05 AM BST" (t/local-date 2016 7 26)
+       "7/24/16 5:45 PM BST" (t/local-date 2016 7 24)))
+
+(deftest test-processed-forecast
+  (testing "valid response XML with conditions in it"
+    (is (= (processed-forecast (forecast-stream))
+           [{:hi 23
+             :low 14
+             :description ""
+             :date (t/local-date 2016 7 24)}
+            {:hi 23
+             :low 12
+             :description "Cloudy"
+             :date (t/local-date 2016 7 25)}
+            {:hi 23
+             :low 15
+             :description "Mostly Cloudy"
+             :date (t/local-date 2016 7 26)}
+            {:hi 22
+             :low 15
+             :description "Showers"
+             :date (t/local-date 2016 7 27)}])))
+
+  (testing "response with no forecast"
+    (is (= (processed-forecast (forecast-stream-empty)) []))))

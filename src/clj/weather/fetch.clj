@@ -16,9 +16,11 @@
   "Weather forcecast for London for today and the next 3 days."
   "http://wxdata.weather.com/wxdata/weather/local/UKXX0085?cc=*&unit=m&dayf=4")
 
-(defn grab-forecast-xml []
-  (-> (http/get weather-url {:as :stream})
-      :body
+(defn grab-forecast-stream []
+  (:body (http/get weather-url {:as :stream})))
+
+(defn xml-stream->xml-zip [stream]
+  (-> stream
       xml/parse
       zip/xml-zip))
 
@@ -49,12 +51,16 @@
         (assoc day :date (t/plus first-date (t/days i))))
       (:days parsed-forecast))))
 
+(defn processed-forecast [forecast-stream]
+  (-> forecast-stream
+      xml-stream->xml-zip
+      parsed-forecast
+      stamped-forecast-days))
+
 (defn fetch-forecast
   "Fetches the forecast from the API and formats it for database insertion."
   []
-  (-> (grab-forecast-xml)
-      parsed-forecast
-      stamped-forecast-days))
+  (processed-forecast (grab-forecast-stream)))
 
 (defn rand-range
   "Returns a random integer between `from` (inclusive) and `to` (exclusive)."

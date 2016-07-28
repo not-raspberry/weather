@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><weather ver="2.0">
+  <head>
+    <locale>en_US</locale>
+    <form>MEDIUM</form>
+    <ut>C</ut>
+    <ud>km</ud>
+    <us>km/h</us>
+    <up>mb</up>
+    <ur>mm</ur>
+  </head>
+  <loc id="UKXX0085">
+    <dnam>London, GLA, United Kingdom</dnam>
+    <tm>5:52 PM</tm>
+    <lat>51.51</lat>
+    <lon>-0.13</lon>
+    <sunr>5:13 AM</sunr>
+    <suns>9:00 PM</suns>
+    <zone>1</zone>
+  </loc>
+  <cc>
+    <lsup>7/24/16 5:45 PM BST</lsup>
+    <obst>London City Airport, GLA, UK</obst>
+    <tmp>23</tmp>
+    <flik>23</flik>
+    <t>Partly Cloudy</t>
+    <icon>30</icon>
+    <bar>
+      <r>1017.61</r>
+      <d>steady</d>
+    </bar>
+    <wind>
+      <s>20</s>
+      <gust>N/A</gust>
+      <d>250</d>
+      <t>WSW</t>
+    </wind>
+    <hmid>59</hmid>
+    <vis>9.7</vis>
+    <uv>
+      <i>1</i>
+      <t>Low</t>
+    </uv>
+    <dewp>15</dewp>
+    <moon>
+      <icon>19</icon>
+      <t>Waning Gibbous</t>
+    </moon>
+  </cc>
+  <dayf>
+    <lsup>7/24/16 7:00 AM BST</lsup>
+    <day d="0" t="Sunday" dt="Jul 24">
+      <hi>23</hi>
+      <low>14</low>
+      <sunr>5:13 AM</sunr>
+      <suns>9:00 PM</suns>
+      <part p="d">
+        <icon/>
+        <t/>
+        <wind>
+          <s>calm</s>
+          <gust>N/A</gust>
+          <d>0</d>
+          <t>CALM</t>
+        </wind>
+        <bt/>
+        <ppcp>0</ppcp>
+        <hmid>0</hmid>
+      </part>
+      <part p="n">
+        <icon>29</icon>
+        <t>Clouds Early / Clearing Late</t>
+        <wind>
+          <s>calm</s>
+          <gust>N/A</gust>
+          <d>0</d>
+          <t>CALM</t>
+        </wind>
+        <bt>Clear Late</bt>
+        <ppcp>10</ppcp>
+        <hmid>77</hmid>
+      </part>
+    </day>
+    <day d="1" t="Monday" dt="Jul 25">
+      <hi>23</hi>
+      <low>12</low>
+      <sunr>5:13 AM</sunr>
+      <suns>9:00 PM</suns>
+      <part p="d">
+        <icon>26</icon>
+        <t>Cloudy</t>
+        <wind>
+          <s>19</s>
+          <gust>N/A</gust>
+          <d>259</d>
+          <t>W</t>
+        </wind>
+        <bt>Cloudy</bt>
+        <ppcp>10</ppcp>
+        <hmid>58</hmid>
+      </part>
+      <part p="n">
+        <icon>29</icon>
+        <t>Clouds Early / Clearing Late</t>
+        <wind>
+          <s>19</s>
+          <gust>N/A</gust>
+          <d>259</d>
+          <t>W</t>
+        </wind>
+        <bt>Clear Late</bt>
+        <ppcp>10</ppcp>
+        <hmid>71</hmid>
+      </part>
+    </day>
+    <day d="2" t="Tuesday" dt="Jul 26">
+      <hi>23</hi>
+      <low>15</low>
+      <sunr>5:13 AM</sunr>
+      <suns>9:00 PM</suns>
+      <part p="d">
+        <icon>28</icon>
+        <t>Mostly Cloudy</t>
+        <wind>
+          <s>14</s>
+          <gust>N/A</gust>
+          <d>257</d>
+          <t>WSW</t>
+        </wind>
+        <bt>M Cloudy</bt>
+        <ppcp>10</ppcp>
+        <hmid>59</hmid>
+      </part>
+      <part p="n">
+        <icon>45</icon>
+        <t>Showers Late</t>
+        <wind>
+          <s>14</s>
+          <gust>N/A</gust>
+          <d>257</d>
+          <t>WSW</t>
+        </wind>
+        <bt>Shwrs Late</bt>
+        <ppcp>50</ppcp>
+        <hmid>73</hmid>
+      </part>
+    </day>
+    <day d="3" t="Wednesday" dt="Jul 27">
+      <hi>22</hi>
+      <low>15</low>
+      <sunr>5:13 AM</sunr>
+      <suns>9:00 PM</suns>
+      <part p="d">
+        <icon>11</icon>
+        <t>Showers</t>
+        <wind>
+          <s>20</s>
+          <gust>N/A</gust>
+          <d>243</d>
+          <t>WSW</t>
+        </wind>
+        <bt>Showers</bt>
+        <ppcp>50</ppcp>
+        <hmid>70</hmid>
+      </part>
+      <part p="n">
+        <icon>29</icon>
+        <t>Partly Cloudy</t>
+        <wind>
+          <s>20</s>
+          <gust>N/A</gust>
+          <d>243</d>
+          <t>WSW</t>
+        </wind>
+        <bt>P Cloudy</bt>
+        <ppcp>20</ppcp>
+        <hmid>78</hmid>
+      </part>
+    </day>
+  </dayf>
+</weather>

@@ -1,0 +1,54 @@
+<weather ver="2.0">
+    <head>
+        <locale>en_US</locale>
+        <form>MEDIUM</form>
+        <ut>C</ut>
+        <ud>km</ud>
+        <us>km/h</us>
+        <up>mb</up>
+        <ur>mm</ur>
+    </head>
+    <loc id="UKXX0085">
+        <dnam>London, GLA, United Kingdom</dnam>
+        <tm>1:31 AM</tm>
+        <lat>51.51</lat>
+        <lon>-0.13</lon>
+        <sunr>5:16 AM</sunr>
+        <suns>8:57 PM</suns>
+        <zone>1</zone>
+    </loc>
+
+
+    <cc>
+        <lsup>7/26/16 1:05 AM BST</lsup>
+        <obst>London City Airport, GLA, UK</obst>
+        <tmp>18</tmp>
+        <flik>18</flik>
+        <t>Partly Cloudy</t>
+        <icon>29</icon>
+
+        <bar>
+            <r>1020.66</r>
+            <d>steady</d>
+        </bar>
+        <wind>
+            <s>14</s>
+            <gust>N/A</gust>
+            <d>270</d>
+            <t>W</t>
+        </wind>
+        <hmid>64</hmid>
+        <vis>9.7</vis>
+        <uv>
+            <i>0</i>
+            <t>Low</t>
+        </uv>
+        <dewp>12</dewp>
+        <moon>
+            <icon>21</icon>
+            <t>Waning Gibbous</t>
+        </moon>
+    </cc>
+    <dayf>
+    </dayf>
+</weather>
