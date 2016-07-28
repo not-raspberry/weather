@@ -11,7 +11,7 @@
 
   E.g. +1 or -4.
   Returns nil if numbers are equal"
-  [value avg]
+  [avg value]
   (let [diff (- value avg)]
     (if-not (zero? diff)
       (str (if (pos? diff) "+" "-")
@@ -25,9 +25,9 @@
       [:div.panel-body
        description
        [:br]
-       "High " hi "° " (difference hi average-hi)
+       "High " hi "° " (difference average-hi hi)
        [:br]
-       "Low " low "° " (difference low average-low)]]]))
+       "Low " low "° " (difference average-low low)]]]))
 
 (defn forecast-page []
   [:div [:h2 "Weather in London"]

@@ -1,0 +1,13 @@
+{
+  "name": "weather",
+  "version": "0.1.0",
+  "description": "A weather web app (package.json is only needed to use Karma for testing ClojureScript)",
+  "devDependencies": {
+    "karma": "^1.1.2",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-cli": "^1.0.1",
+    "karma-cljs-test": "^0.1.0",
+    "karma-firefox-launcher": "^1.0.0"
+  },
+  "license": "EPL-1.0"
+}

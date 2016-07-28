@@ -76,8 +76,18 @@
               :source-map true
               :optimizations :none
               :pretty-print  true}}
+            :test
+            {:source-paths ["src/cljs" "test/cljs"]
+             :compiler {:main weather.test_runner
+                        :asset-path "/js/out"
+                        :output-to "target/test.js"
+                        :output-dir "target/cljstest/public/js/out"
+                        :optimizations :whitespace
+                        :pretty-print true}}
             }
    }
+  :doo {:build "test"
+        :paths {:karma "./node_modules/karma/bin/karma"}}
 
   :figwheel
   {:http-server-root "public"
@@ -100,7 +110,8 @@
 
                    :source-paths ["env/dev/clj"]
                    :resource-paths ["env/dev/config"]
-                   :plugins [[lein-figwheel "0.5.4-5"]]
+                   :plugins [[lein-figwheel "0.5.4-5"]
+                             [lein-doo "0.1.7"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
