@@ -8,7 +8,6 @@
             [weather.fixtures :refer [db-setup clean-conditions-table
                                       forecast-stream expected-parsed-forecast]]
             [weather.db :as db]
-            [weather.server :refer [connect-to-db]]
             [weather.fetch :refer :all]))
 
 (use-fixtures :once db-setup)

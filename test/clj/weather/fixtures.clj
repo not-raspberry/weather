@@ -8,7 +8,7 @@
             [weather.server :refer [connect-to-db]]))
 
 
-; Testing helpers and data
+; Testing resources
 
 (defn forecast-stream []
   (input-stream (resource "sample/forecast.xml")))
