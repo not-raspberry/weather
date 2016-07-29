@@ -1,36 +1,12 @@
 (ns weather.test-fetch
-  (:require [clojure.java.io :refer [input-stream resource]]
-            [clojure.test :refer :all]
+  (:require [clojure.test :refer :all]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
             [clj-time.core :as t]
+            [weather.fixtures :refer [forecast-stream forecast-stream-empty
+                                      expected-parsed-forecast]]
             [weather.fetch :refer :all]))
-
-(defn forecast-stream []
-  (input-stream (resource "sample/forecast.xml")))
-
-(defn forecast-stream-empty []
-  (input-stream (resource "sample/empty-forecast.xml")))
-
-(def expected-parsed-forecast
-  "Expected results of parsing sample/forecast.xml"
-  [{:hi 23
-    :low 14
-    :description ""
-    :date (t/local-date 2016 7 24)}
-   {:hi 23
-    :low 12
-    :description "Cloudy"
-    :date (t/local-date 2016 7 25)}
-   {:hi 23
-    :low 15
-    :description "Mostly Cloudy"
-    :date (t/local-date 2016 7 26)}
-   {:hi 22
-    :low 15
-    :description "Showers"
-    :date (t/local-date 2016 7 27)}])
 
 
 (defspec number-generated-by-rand-range-is-in-the-passed-range

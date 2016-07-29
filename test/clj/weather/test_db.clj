@@ -5,37 +5,11 @@
             [clj-time.core :as t]
             [clj-time.format :as f]
             [clj-time.coerce :refer [to-sql-date]]
-            [weather.test-fetch :refer [forecast-stream expected-parsed-forecast]]
+            [weather.fixtures :refer [db-setup clean-conditions-table
+                                      forecast-stream expected-parsed-forecast]]
             [weather.db :as db]
             [weather.server :refer [connect-to-db]]
             [weather.fetch :refer :all]))
-
-(defn db-setup
-  "Fixture to connect to the testing database, nuke it, recreate it using
-  migrations, and create a default connection."
-  [f]
-  (connect-to-db)
-
-  ; Cleaning the schema. Using DROP SCHEMA would require making the user
-  ; the owner of the schema. To minimize the amount of configuration, tables
-  ; are dropped one by one.
-  (jdbc/with-db-connection [conn {:datasource @db/datasource}]
-    (jdbc/execute!
-      conn "DROP TABLE IF EXISTS migrations; DROP TABLE IF EXISTS conditions;"))
-
-  (db/migrate :upgrade)
-
-  (jdbc/with-db-connection [conn {:datasource @db/datasource}]
-    (binding [db/*db* conn]
-      (f)))
-
-  (db/disconnect!))
-
-(defn clean-conditions-table
-  "Deletes everything from the conditions table on setup."
-  [f]
-  (jdbc/execute! db/*db*  "DELETE FROM conditions")
-  (f))
 
 (use-fixtures :once db-setup)
 (use-fixtures :each clean-conditions-table)
